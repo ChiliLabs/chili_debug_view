@@ -29,36 +29,52 @@ class _DebugViewState extends State<DebugView> {
     final viewPadding = MediaQuery.of(context).viewPadding;
     final safeAreaBottomPadding = viewPadding.bottom;
 
-    return ValueListenableBuilder<bool>(
-      valueListenable: _showDebugButtonNotifier,
-      builder: (context, showDebugButton, _) {
-        return LayoutBuilder(
-          builder: (context, constraints) {
-            final horizontalOffset = constraints.maxWidth - _buttonPadding;
-            final verticalOffset =
-                constraints.maxHeight - safeAreaBottomPadding - _buttonPadding;
+    return Theme(
+      data: ThemeData(
+        textTheme: Theme.of(context).textTheme.apply(
+              bodyColor: Colors.white,
+              displayColor: Colors.white,
+            ),
+        scaffoldBackgroundColor: const Color(0xFF343434),
+        primaryColor: Colors.white,
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Color(0xFF343434),
+          foregroundColor: Colors.white,
+        ),
+        useMaterial3: true,
+      ),
+      child: ValueListenableBuilder<bool>(
+        valueListenable: _showDebugButtonNotifier,
+        builder: (context, showDebugButton, _) {
+          return LayoutBuilder(
+            builder: (context, constraints) {
+              final horizontalOffset = constraints.maxWidth - _buttonPadding;
+              final verticalOffset = constraints.maxHeight -
+                  safeAreaBottomPadding -
+                  _buttonPadding;
 
-            return Stack(
-              children: [
-                if (app != null) app,
-                if (widget.showDebugViewButton)
-                  DraggableFloatingActionButton(
-                    scaleFactor: showDebugButton ? 1 : 0,
-                    topPadding: viewPadding.top,
-                    bottomPadding: safeAreaBottomPadding,
-                    width: constraints.maxWidth,
-                    height: constraints.maxHeight - safeAreaBottomPadding,
-                    initialOffset: Offset(horizontalOffset, verticalOffset),
-                    onPressed: _onDebugButtonPressed(showDebugButton),
-                    onError: (e) => debugPrint(
-                      'Failed to init DraggableFloatingActionButton: $e',
+              return Stack(
+                children: [
+                  if (app != null) app,
+                  if (widget.showDebugViewButton)
+                    DraggableFloatingActionButton(
+                      scaleFactor: showDebugButton ? 1 : 0,
+                      topPadding: viewPadding.top,
+                      bottomPadding: safeAreaBottomPadding,
+                      width: constraints.maxWidth,
+                      height: constraints.maxHeight - safeAreaBottomPadding,
+                      initialOffset: Offset(horizontalOffset, verticalOffset),
+                      onPressed: _onDebugButtonPressed(showDebugButton),
+                      onError: (e) => debugPrint(
+                        'Failed to init DraggableFloatingActionButton: $e',
+                      ),
                     ),
-                  ),
-              ],
-            );
-          },
-        );
-      },
+                ],
+              );
+            },
+          );
+        },
+      ),
     );
   }
 
