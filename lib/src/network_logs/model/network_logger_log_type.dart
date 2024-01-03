@@ -1,4 +1,4 @@
-enum NetworkLoggerLogType { request, response, error }
+enum NetworkLoggerLogType { started, success, error }
 
 extension NetworkLoggerLogTypeFiltering on NetworkLoggerLogType {
   bool containsLevel(Set<NetworkLoggerLogType> types) {

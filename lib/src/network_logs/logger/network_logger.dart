@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:chili_debug_view/src/network_logs/model/network_log.dart';
@@ -5,17 +6,34 @@ import 'package:flutter/foundation.dart';
 import 'package:path_provider/path_provider.dart';
 
 class NetworkLogger {
-  static List<NetworkLog> logs = [];
+  static Map<String, NetworkLog> logs = <String, NetworkLog>{};
+  static StreamController<List<NetworkLog>> logsStreamController =
+      StreamController<List<NetworkLog>>();
 
   static File? _file;
   static String? _path;
 
-  static void log(NetworkLog log) {
+  static File? getFile() => _file;
+
+  static void log({
+    required String id,
+    required NetworkLog log,
+  }) {
     _writeLogInFile(log);
-    logs.add(log);
+
+    logs[id] = log;
+    logsStreamController.add(logs.values.toList());
   }
 
-  static File? getFile() => _file;
+  static void clearLogs() {
+    logs = {};
+    logsStreamController.add([]);
+  }
+
+  static void disposeListeners() {
+    logsStreamController.close();
+    logsStreamController = StreamController<List<NetworkLog>>();
+  }
 
   static Future<void> _createFile() async {
     try {

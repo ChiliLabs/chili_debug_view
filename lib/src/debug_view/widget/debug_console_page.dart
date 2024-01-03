@@ -1,5 +1,6 @@
 import 'package:chili_debug_view/src/console_logs/widget/console_logs_page.dart';
 import 'package:chili_debug_view/src/network_logs/widget/network_logs_page.dart';
+import 'package:chili_debug_view/src/theme/typography/app_typography.dart';
 import 'package:flutter/material.dart';
 
 class DebugConsolePage extends StatefulWidget {
@@ -25,7 +26,10 @@ class _DebugConsolePageState extends State<DebugConsolePage> {
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
-          title: const Text('Debug console'),
+          title: const Text(
+            'Debug console',
+            style: AppTypography.headline,
+          ),
         ),
         body: SafeArea(
           child: ListView(
@@ -81,22 +85,38 @@ class _DebugViewItem extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) => Row(
-        children: [
-          Expanded(
-            child: Container(
-              margin: const EdgeInsets.only(
-                left: 16,
-                right: 16,
-                bottom: 8,
+  Widget build(BuildContext context) => Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+        child: TextButton(
+          onPressed: onPressed,
+          style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.resolveWith<Color?>(
+              (states) => Colors.white12,
+            ),
+            shape: MaterialStateProperty.resolveWith<OutlinedBorder?>(
+              (state) => const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(10)),
               ),
-              width: double.infinity,
-              child: TextButton(
-                onPressed: onPressed,
-                child: Text(title),
+            ),
+            overlayColor: MaterialStateProperty.resolveWith<Color?>(
+              (states) {
+                if (states.contains(MaterialState.pressed)) {
+                  return Colors.white24;
+                }
+
+                return Colors.white12;
+              },
+            ),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8),
+            child: Text(
+              title,
+              style: AppTypography.title.copyWith(
+                color: Colors.white,
               ),
             ),
           ),
-        ],
+        ),
       );
 }
