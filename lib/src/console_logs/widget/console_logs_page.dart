@@ -8,7 +8,7 @@ class ConsoleLogsPage extends StatelessWidget {
     return const Scaffold(
       body: Center(
         child: Text(
-          'Condole logs page',
+          'Console logs page',
         ),
       ),
     );

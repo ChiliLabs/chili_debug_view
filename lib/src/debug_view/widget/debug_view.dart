@@ -31,10 +31,6 @@ class _DebugViewState extends State<DebugView> {
 
     return Theme(
       data: ThemeData(
-        textTheme: Theme.of(context).textTheme.apply(
-              bodyColor: Colors.white,
-              displayColor: Colors.white,
-            ),
         scaffoldBackgroundColor: const Color(0xFF343434),
         primaryColor: Colors.white,
         appBarTheme: const AppBarTheme(
@@ -42,6 +38,10 @@ class _DebugViewState extends State<DebugView> {
           foregroundColor: Colors.white,
         ),
         useMaterial3: true,
+        textTheme: Theme.of(context).textTheme.apply(
+              bodyColor: Colors.white,
+              displayColor: Colors.white,
+            ),
       ),
       child: ValueListenableBuilder<bool>(
         valueListenable: _showDebugButtonNotifier,

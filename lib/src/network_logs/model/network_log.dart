@@ -1,6 +1,5 @@
 import 'package:chili_debug_view/src/network_logs/model/network_logger_log_type.dart';
 import 'package:chili_debug_view/src/time/time_provider.dart';
-import 'package:flutter/foundation.dart';
 
 class NetworkLog {
   final NetworkLoggerLogType type;
@@ -61,7 +60,7 @@ class NetworkLog {
 
     var result = '';
     result += 'Uri: $uri\n';
-    result += 'Type: ${describeEnum(type)}\n';
+    result += 'Type: ${type.name}\n';
     result += 'Method: $method\n';
     result += 'Request date time: $requestTime\n';
 

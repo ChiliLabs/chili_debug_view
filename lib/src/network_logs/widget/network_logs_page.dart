@@ -1,15 +1,14 @@
-import 'dart:io';
-
 import 'package:chili_debug_view/src/network_logs/logger/network_logger.dart';
 import 'package:chili_debug_view/src/network_logs/model/network_log.dart';
-import 'package:chili_debug_view/src/network_logs/model/network_logger_log_type.dart';
 import 'package:chili_debug_view/src/network_logs/widget/network_logs_details_page.dart';
+import 'package:chili_debug_view/src/network_logs/widget/network_logs_item.dart';
+import 'package:chili_debug_view/src/share/share_provider.dart';
 import 'package:chili_debug_view/src/theme/alert/adaptive_alert_dialog.dart';
+import 'package:chili_debug_view/src/theme/animation/app_animations.dart';
+import 'package:chili_debug_view/src/theme/button/small_icon_button.dart';
+import 'package:chili_debug_view/src/theme/button/small_text_button.dart';
 import 'package:chili_debug_view/src/theme/typography/app_typography.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:share_plus/share_plus.dart';
 
 class NetworkLogsPage extends StatefulWidget {
   const NetworkLogsPage({super.key});
@@ -19,8 +18,13 @@ class NetworkLogsPage extends StatefulWidget {
 }
 
 class _NetworkLogsPageState extends State<NetworkLogsPage> {
+  static const _toolbarHeight = 54.0;
+
   late final TextEditingController _filterTextController;
   late List<NetworkLog> _filteredLogs;
+  late List<NetworkLog> _selectedLogs;
+
+  var _isSelectableMode = false;
 
   @override
   void initState() {
@@ -28,114 +32,113 @@ class _NetworkLogsPageState extends State<NetworkLogsPage> {
 
     _filterTextController = TextEditingController();
     _filteredLogs = NetworkLogger.logs.values.toList();
+    _selectedLogs = [];
 
     NetworkLogger.logsStreamController.stream.listen((_) => _filterLogs());
   }
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-        appBar: AppBar(
-          title: const Text(
-            'Network logs',
-            style: AppTypography.headline,
-          ),
-          actions: [
-            InkWell(
-              onTap: _createShareFile,
-              child: const Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Icon(Icons.share),
-              ),
-            ),
-            const SizedBox(width: 8),
-            InkWell(
-              onTap: _onRemoveLogs,
-              child: const Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Icon(Icons.delete_forever),
-              ),
-            ),
-            const SizedBox(width: 8),
-          ],
-          bottom: PreferredSize(
-            preferredSize: const Size(double.infinity, 64),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              child: SizedBox(
-                height: 54,
-                child: TextFormField(
-                  controller: _filterTextController,
-                  onChanged: (_) => _filterLogs(),
-                  cursorColor: Colors.white,
-                  decoration: InputDecoration(
-                    contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 8,
-                    ),
-                    hintText: 'Search by url, status code, method',
-                    hintStyle: const TextStyle(color: Colors.white54),
-                    focusedBorder: _border,
-                    enabledBorder: _border,
-                    border: _border,
-                    suffixIcon: _filterTextController.text.isNotEmpty
-                        ? IconButton(
-                            onPressed: _onSearchBarCancel,
-                            icon: const Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: Icon(
-                                Icons.cancel_outlined,
-                                color: Colors.white,
-                              ),
-                            ),
-                          )
-                        : null,
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ),
-        body: ListView.builder(
-          padding: const EdgeInsets.only(bottom: 100, top: 8),
-          itemBuilder: (context, index) {
-            final item = _filteredLogs.reversed.toList()[index];
+  Widget build(BuildContext context) {
+    final bottomSafeArea = MediaQuery.paddingOf(context).bottom;
+    final selectedAll = _selectedLogs.length == _filteredLogs.length;
+    final bottomBarHeight =
+        _isSelectableMode ? _toolbarHeight + bottomSafeArea : 0.0;
 
-            return Padding(
-              padding: const EdgeInsets.symmetric(
-                vertical: 4,
-                horizontal: 16,
+    return Scaffold(
+      bottomNavigationBar: AnimatedContainer(
+        curve: Curves.easeOut,
+        duration: AppAnimations.defaultDuration,
+        color: Colors.black26,
+        height: bottomBarHeight,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SmallTextButton(
+                title: selectedAll ? 'Unselect all' : 'Select all',
+                onTap: () => _onSelectAll(selectedAll),
               ),
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: const BorderRadius.all(
-                    Radius.circular(10),
-                  ),
-                  color: logTypeColor(item.type),
-                ),
-                child: GestureDetector(
-                  behavior: HitTestBehavior.translucent,
-                  onTap: () => _onDetailsTap(item),
-                  child: Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          describeEnum(item.type).toUpperCase(),
-                          style: AppTypography.bodyBold,
-                        ),
-                        const SizedBox(height: 16),
-                        Text(item.uri),
-                      ],
-                    ),
-                  ),
-                ),
+              SmallTextButton(
+                title: 'Export',
+                onTap: _selectedLogs.isEmpty
+                    ? null
+                    : () => ShareProvider.share(_selectedLogs),
               ),
-            );
-          },
-          itemCount: _filteredLogs.length,
+            ],
+          ),
         ),
-      );
+      ),
+      appBar: AppBar(
+        title: const Text(
+          'Network logs',
+          style: AppTypography.headline,
+        ),
+        actions: [
+          SmallTextButton(
+            title: _isSelectableMode ? 'Cancel' : 'Select',
+            onTap: _onChangeSelectableMode,
+          ),
+          SmallTextButton(
+            title: 'Remove',
+            onTap: _onRemoveLogs,
+          ),
+          const SizedBox(width: 8),
+        ],
+        bottom: PreferredSize(
+          preferredSize: const Size(double.infinity, _toolbarHeight),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 16,
+              vertical: 8,
+            ),
+            child: SizedBox(
+              height: _toolbarHeight,
+              child: TextFormField(
+                controller: _filterTextController,
+                onChanged: (_) => _filterLogs(),
+                cursorColor: Colors.white,
+                decoration: InputDecoration(
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 8,
+                  ),
+                  hintText: 'Search by url, status code, method',
+                  hintStyle: const TextStyle(color: Colors.white54),
+                  focusedBorder: _border,
+                  enabledBorder: _border,
+                  border: _border,
+                  suffixIcon: _filterTextController.text.isNotEmpty
+                      ? SmallIconButton(
+                          icon: Icons.cancel_outlined,
+                          onTap: _onSearchBarCancel,
+                        )
+                      : null,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+      body: ListView.builder(
+        padding: const EdgeInsets.only(bottom: 100, top: 8),
+        itemBuilder: (context, index) {
+          final item = _filteredLogs.reversed.toList()[index];
+
+          return NetworkLogsItem(
+            item: item,
+            isSelected: _selectedLogs.contains(item),
+            isSelectableMode: _isSelectableMode,
+            onTap: _isSelectableMode
+                ? () => _onItemSelect(item)
+                : () => _onDetailsTap(item),
+          );
+        },
+        itemCount: _filteredLogs.length,
+      ),
+    );
+  }
 
   @override
   void dispose() {
@@ -143,11 +146,45 @@ class _NetworkLogsPageState extends State<NetworkLogsPage> {
     super.dispose();
   }
 
-  void _onSearchBarCancel() {
-    _filteredLogs = NetworkLogger.logs.values.toList();
-    _filterTextController.clear();
-    setState(() {});
-  }
+  void _onSearchBarCancel() => setState(
+        () {
+          _filteredLogs = NetworkLogger.logs.values.toList();
+          _filterTextController.clear();
+        },
+      );
+
+  void _onSelectAll(bool selectedAll) => setState(
+        () {
+          selectedAll
+              ? _selectedLogs = []
+              : _selectedLogs.addAll(_filteredLogs);
+        },
+      );
+
+  void _onChangeSelectableMode() => setState(
+        () {
+          _isSelectableMode = !_isSelectableMode;
+          if (!_isSelectableMode) {
+            _selectedLogs = [];
+          }
+        },
+      );
+
+  void _onItemSelect(NetworkLog item) => setState(
+        () {
+          if (_selectedLogs.contains(item)) {
+            _selectedLogs.remove(item);
+          } else {
+            _selectedLogs.add(item);
+          }
+        },
+      );
+
+  void _onDetailsTap(NetworkLog log) => Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => NetworkLogsDetailsPage(log: log),
+        ),
+      );
 
   void _onRemoveLogs() {
     if (NetworkLogger.logs.isEmpty) return;
@@ -195,25 +232,6 @@ class _NetworkLogsPageState extends State<NetworkLogsPage> {
     setState(() => _filteredLogs = filteredLogsByType);
   }
 
-  void _onDetailsTap(NetworkLog log) {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => NetworkLogsDetailsPage(log: log),
-      ),
-    );
-  }
-
-  Color logTypeColor(NetworkLoggerLogType type) {
-    switch (type) {
-      case NetworkLoggerLogType.success:
-        return Colors.green;
-      case NetworkLoggerLogType.error:
-        return Colors.red;
-      case NetworkLoggerLogType.started:
-        return Colors.blue;
-    }
-  }
-
   OutlineInputBorder get _border => const OutlineInputBorder(
         borderSide: BorderSide(
           color: Colors.white24,
@@ -221,37 +239,4 @@ class _NetworkLogsPageState extends State<NetworkLogsPage> {
         ),
         borderRadius: BorderRadius.all(Radius.circular(12)),
       );
-
-  void _createShareFile() async {
-    try {
-      final file = NetworkLogger.getFile();
-      if (file != null) {
-        _shareFile(file);
-      } else {
-        final directory = await getTemporaryDirectory();
-        final name =
-            'network_logs_${DateTime.now().millisecondsSinceEpoch}.txt';
-        final path = '${directory.path}/$name';
-        final file = File(path);
-        final logs = NetworkLogger.logs.values
-            .map((e) => e.toString())
-            .join('\n-----------------------\n');
-        file.writeAsStringSync(logs);
-        _shareFile(file);
-      }
-    } on Exception catch (ex, st) {
-      debugPrintStack(
-        label: 'Failed to share logs: $ex',
-        stackTrace: st,
-      );
-    }
-  }
-
-  void _shareFile(File file) {
-    Share.shareXFiles(
-      [XFile(file.path, mimeType: 'text/*')],
-      subject: 'Network logs',
-      text: 'Network logs',
-    );
-  }
 }
