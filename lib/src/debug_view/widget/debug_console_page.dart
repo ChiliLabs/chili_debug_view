@@ -99,13 +99,9 @@ class _DebugViewItem extends StatelessWidget {
               ),
             ),
             overlayColor: MaterialStateProperty.resolveWith<Color?>(
-              (states) {
-                if (states.contains(MaterialState.pressed)) {
-                  return Colors.white24;
-                }
-
-                return Colors.white12;
-              },
+              (states) => states.contains(MaterialState.pressed)
+                  ? Colors.white24
+                  : Colors.white12,
             ),
           ),
           child: Padding(

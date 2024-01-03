@@ -25,4 +25,9 @@ class AppTypography {
     fontSize: 14,
     fontWeight: FontWeight.w700,
   );
+
+  static const actionButton = TextStyle(
+    fontSize: 13,
+    fontWeight: FontWeight.w600,
+  );
 }
