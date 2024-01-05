@@ -64,7 +64,7 @@ class _NetworkLogsPageState extends State<NetworkLogsPage> {
                 title: 'Export',
                 onTap: _selectedLogs.isEmpty
                     ? null
-                    : () => ShareProvider.share(_selectedLogs),
+                    : () => ShareProvider.shareNetworkLogs(_selectedLogs),
               ),
             ],
           ),
