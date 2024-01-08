@@ -37,7 +37,6 @@ class _ConsoleLogsPageState extends State<ConsoleLogsPage> {
   Widget build(BuildContext context) {
     final bottomSafeArea = MediaQuery.paddingOf(context).bottom;
     final bottomBarHeight = _toolbarHeight + bottomSafeArea;
-    if (_follow) _scrollToBottom();
 
     return Scaffold(
       bottomNavigationBar: AnimatedContainer(
@@ -156,6 +155,7 @@ class _ConsoleLogsPageState extends State<ConsoleLogsPage> {
           .toList();
     }
     setState(() => _filteredLogs = filteredLogs);
+    if (_follow) _scrollToBottom();
   }
 
   void _onSearchBarCancel() => setState(
