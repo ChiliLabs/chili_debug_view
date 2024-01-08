@@ -121,9 +121,10 @@ class _ConsoleLogsPageState extends State<ConsoleLogsPage> {
       body: ListView.builder(
         controller: _scrollController,
         itemCount: _filteredLogs.length,
-        itemBuilder: (BuildContext context, int index) {
+        itemBuilder: (context, index) {
           final message = _filteredLogs[index];
           return Container(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
             color: message.level.getColor,
             child: Text(
               message.message,

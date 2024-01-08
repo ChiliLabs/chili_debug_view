@@ -26,23 +26,24 @@ class DebugView extends StatefulWidget {
 
 class _DebugViewState extends State<DebugView> {
   final _showDebugButtonNotifier = ValueNotifier(true);
-  final _flutterNativeLogsPlugin = FlutterNativeLogs();
+  late final FlutterNativeLogs _flutterNativeLogsPlugin;
   StreamSubscription<NativeLogMessage>? _logStreamSubscription;
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback(
-      (_) => _logStreamSubscription = _flutterNativeLogsPlugin.logStream.listen(
+    if (widget.showDebugViewButton) {
+      _flutterNativeLogsPlugin = FlutterNativeLogs();
+      _logStreamSubscription = _flutterNativeLogsPlugin.logStream.listen(
         ConsoleLogger.log,
-      ),
-    );
+      );
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     final app = widget.app;
-    final viewPadding = MediaQuery.of(context).viewPadding;
+    final viewPadding = MediaQuery.paddingOf(context);
     final safeAreaBottomPadding = viewPadding.bottom;
 
     return Theme(
