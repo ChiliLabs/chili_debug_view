@@ -10,7 +10,7 @@ Add to `pubspec.yaml`:
 ```
   chili_debug_view:
     git:
-      url: https://github.com/ChiliLabs/chili_debug_view
+      url: git@github.com:ChiliLabs/chili_debug_view.git
       ref: main
 ```
 
