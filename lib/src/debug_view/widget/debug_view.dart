@@ -1,10 +1,6 @@
-import 'dart:async';
-
-import 'package:chili_debug_view/src/console_logs/logger/console_logger.dart';
 import 'package:chili_debug_view/src/debug_view/widget/debug_console_page.dart';
 import 'package:chili_debug_view/src/debug_view/widget/draggable_floating_action_button.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_native_log_handler/flutter_native_logs.dart';
 
 const _buttonPadding = 80.0;
 
@@ -26,19 +22,6 @@ class DebugView extends StatefulWidget {
 
 class _DebugViewState extends State<DebugView> {
   final _showDebugButtonNotifier = ValueNotifier(true);
-  late final FlutterNativeLogs _flutterNativeLogsPlugin;
-  StreamSubscription<NativeLogMessage>? _logStreamSubscription;
-
-  @override
-  void initState() {
-    super.initState();
-    if (widget.showDebugViewButton) {
-      _flutterNativeLogsPlugin = FlutterNativeLogs();
-      _logStreamSubscription = _flutterNativeLogsPlugin.logStream.listen(
-        ConsoleLogger.log,
-      );
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -105,11 +88,5 @@ class _DebugViewState extends State<DebugView> {
             ),
           ),
         );
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _logStreamSubscription?.cancel();
   }
 }
