@@ -12,7 +12,6 @@ dependencies:
   dio: any
   share_plus: any
   path_provider: any
-  flutter_native_log_handler: ^0.1.2
 
 dev_dependencies:
   flutter_test:
