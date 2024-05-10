@@ -31,9 +31,9 @@ class _DebugViewState extends State<DebugView> {
 
     return ValueListenableBuilder<bool>(
       valueListenable: _showDebugButtonNotifier,
-      builder: (context, showDebugButton, _) {
+      builder: (_, showDebugButton, __) {
         return LayoutBuilder(
-          builder: (context, constraints) {
+          builder: (_, constraints) {
             final horizontalOffset = constraints.maxWidth - _buttonPadding;
             final verticalOffset =
                 constraints.maxHeight - safeAreaBottomPadding - _buttonPadding;
