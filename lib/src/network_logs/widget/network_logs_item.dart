@@ -66,13 +66,18 @@ class NetworkLogsItem extends StatelessWidget {
                           children: [
                             Text(
                               item.type.name.toUpperCase(),
-                              style: AppTypography.bodyBold,
+                              style: AppTypography.bodyBold.copyWith(
+                                color: Colors.white,
+                              ),
                             ),
                             if (responseTime != null) ...[
                               const SizedBox(width: 8),
                               Text(
                                 TimeProvider.prettyDuration(
                                   responseTime.difference(item.requestTime),
+                                ),
+                                style: AppTypography.body.copyWith(
+                                  color: Colors.white,
                                 ),
                               )
                             ],
@@ -82,7 +87,9 @@ class NetworkLogsItem extends StatelessWidget {
                         Text(
                           item.uri,
                           maxLines: 3,
-                          style: AppTypography.body,
+                          style: AppTypography.body.copyWith(
+                            color: Colors.white,
+                          ),
                         ),
                       ],
                     ),

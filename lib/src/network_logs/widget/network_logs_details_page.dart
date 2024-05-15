@@ -20,7 +20,10 @@ class NetworkLogsDetailsPage extends StatelessWidget {
     final responseBody = log.responseBody;
 
     return Scaffold(
+      backgroundColor: Colors.black,
       appBar: AppBar(
+        foregroundColor: Colors.white,
+        backgroundColor: Colors.black,
         title: const Text(
           'Log details',
           style: AppTypography.headline,
@@ -79,9 +82,11 @@ class NetworkLogsDetailsPage extends StatelessWidget {
             ),
           ),
           if (requestBody != null) ...[
-            const Text(
+            Text(
               'Request Headers:',
-              style: AppTypography.bodyBold,
+              style: AppTypography.bodyBold.copyWith(
+                color: Colors.white,
+              ),
             ),
             const SizedBox(height: 16),
             ...log.requestHeaders.entries
@@ -91,11 +96,15 @@ class NetworkLogsDetailsPage extends StatelessWidget {
                       children: [
                         TextSpan(
                           text: '${header.key} ',
-                          style: AppTypography.bodySemiBold,
+                          style: AppTypography.bodySemiBold.copyWith(
+                            color: Colors.white,
+                          ),
                         ),
                         TextSpan(
                           text: header.value,
-                          style: AppTypography.body,
+                          style: AppTypography.body.copyWith(
+                            color: Colors.white,
+                          ),
                         ),
                       ],
                     ),
@@ -103,14 +112,18 @@ class NetworkLogsDetailsPage extends StatelessWidget {
                 )
                 .toList(),
             const SizedBox(height: 16),
-            const Text(
+            Text(
               'Request body',
-              style: AppTypography.bodyBold,
+              style: AppTypography.bodyBold.copyWith(
+                color: Colors.white,
+              ),
             ),
             const SizedBox(height: 16),
             SelectableText(
               requestBody,
-              style: AppTypography.body,
+              style: AppTypography.body.copyWith(
+                color: Colors.white,
+              ),
             ),
           ],
           if (responseBody != null) ...[
@@ -121,9 +134,11 @@ class NetworkLogsDetailsPage extends StatelessWidget {
                 color: Colors.grey,
               ),
             ),
-            const Text(
+            Text(
               'Response Headers:',
-              style: AppTypography.bodyBold,
+              style: AppTypography.bodyBold.copyWith(
+                color: Colors.white,
+              ),
             ),
             const SizedBox(height: 16),
             ...(log.responseHeaders?.entries ?? {})
@@ -133,11 +148,15 @@ class NetworkLogsDetailsPage extends StatelessWidget {
                       children: [
                         TextSpan(
                           text: '${header.key} ',
-                          style: AppTypography.bodySemiBold,
+                          style: AppTypography.bodySemiBold.copyWith(
+                            color: Colors.white,
+                          ),
                         ),
                         TextSpan(
                           text: header.value,
-                          style: AppTypography.body,
+                          style: AppTypography.body.copyWith(
+                            color: Colors.white,
+                          ),
                         ),
                       ],
                     ),
@@ -145,14 +164,18 @@ class NetworkLogsDetailsPage extends StatelessWidget {
                 )
                 .toList(),
             const SizedBox(height: 16),
-            const Text(
+            Text(
               'Response body',
-              style: AppTypography.bodyBold,
+              style: AppTypography.bodyBold.copyWith(
+                color: Colors.white,
+              ),
             ),
             const SizedBox(height: 16),
             SelectableText(
               responseBody,
-              style: AppTypography.body,
+              style: AppTypography.body.copyWith(
+                color: Colors.white,
+              ),
             ),
             const SizedBox(height: 16),
           ],
@@ -185,13 +208,13 @@ class _SimpleInfoItem extends StatelessWidget {
         children: [
           Text(
             title,
-            style: AppTypography.bodyBold,
+            style: AppTypography.bodyBold.copyWith(color: Colors.white),
           ),
           const SizedBox(width: 8),
           Flexible(
             child: SelectableText(
               description,
-              style: AppTypography.body,
+              style: AppTypography.body.copyWith(color: Colors.white),
             ),
           ),
         ],
