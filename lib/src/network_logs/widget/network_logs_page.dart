@@ -45,6 +45,7 @@ class _NetworkLogsPageState extends State<NetworkLogsPage> {
         _isSelectableMode ? _toolbarHeight + bottomSafeArea : 0.0;
 
     return Scaffold(
+      backgroundColor: Colors.black,
       bottomNavigationBar: AnimatedContainer(
         curve: Curves.easeOut,
         duration: AppAnimations.defaultDuration,
@@ -71,6 +72,8 @@ class _NetworkLogsPageState extends State<NetworkLogsPage> {
         ),
       ),
       appBar: AppBar(
+        foregroundColor: Colors.white,
+        backgroundColor: Colors.black,
         title: const Text(
           'Network logs',
           style: AppTypography.headline,
@@ -96,6 +99,7 @@ class _NetworkLogsPageState extends State<NetworkLogsPage> {
             child: SizedBox(
               height: _toolbarHeight,
               child: TextFormField(
+                style: const TextStyle(color: Colors.white),
                 controller: _filterTextController,
                 onChanged: (_) => _filterLogs(),
                 cursorColor: Colors.white,

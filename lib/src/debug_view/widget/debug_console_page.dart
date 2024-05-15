@@ -24,7 +24,10 @@ class _DebugConsolePageState extends State<DebugConsolePage> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
+        backgroundColor: Colors.black,
         appBar: AppBar(
+          foregroundColor: Colors.white,
+          backgroundColor: Colors.black,
           title: const Text(
             'Debug console',
             style: AppTypography.headline,
