@@ -11,7 +11,12 @@ import 'package:chili_debug_view/src/theme/typography/app_typography.dart';
 import 'package:flutter/material.dart';
 
 class NetworkLogsPage extends StatefulWidget {
-  const NetworkLogsPage({super.key});
+  final ValueNotifier<bool> showDebugButtonNotifier;
+
+  const NetworkLogsPage({
+    super.key,
+    required this.showDebugButtonNotifier,
+  });
 
   @override
   State<NetworkLogsPage> createState() => _NetworkLogsPageState();
@@ -31,10 +36,12 @@ class _NetworkLogsPageState extends State<NetworkLogsPage> {
     super.initState();
 
     _filterTextController = TextEditingController();
-    _filteredLogs = NetworkLogger.logs.values.toList();
+    _filteredLogs = List.of(NetworkLogger.logs.values.toList());
     _selectedLogs = [];
 
     NetworkLogger.logsStreamController.stream.listen((_) => _filterLogs());
+
+    _toggleShowDebugNotificationValue(false);
   }
 
   @override
@@ -54,13 +61,18 @@ class _NetworkLogsPageState extends State<NetworkLogsPage> {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SmallTextButton(
                 title: selectedAll ? 'Unselect all' : 'Select all',
                 onTap: () => _onSelectAll(selectedAll),
               ),
+              const Spacer(),
+              SmallTextButton(
+                title: 'Remove',
+                onTap: _selectedLogs.isEmpty ? null : _onRemoveLogs,
+              ),
+              const SizedBox(width: 12),
               SmallTextButton(
                 title: 'Export',
                 onTap: _selectedLogs.isEmpty
@@ -82,10 +94,6 @@ class _NetworkLogsPageState extends State<NetworkLogsPage> {
           SmallTextButton(
             title: _isSelectableMode ? 'Cancel' : 'Select',
             onTap: _onChangeSelectableMode,
-          ),
-          SmallTextButton(
-            title: 'Remove',
-            onTap: _onRemoveLogs,
           ),
           const SizedBox(width: 8),
         ],
@@ -147,12 +155,19 @@ class _NetworkLogsPageState extends State<NetworkLogsPage> {
   @override
   void dispose() {
     NetworkLogger.disposeListeners();
+    _toggleShowDebugNotificationValue(true);
+
     super.dispose();
   }
 
+  void _toggleShowDebugNotificationValue(bool value) =>
+      WidgetsBinding.instance.addPostFrameCallback(
+        (_) => widget.showDebugButtonNotifier.value = value,
+      );
+
   void _onSearchBarCancel() => setState(
         () {
-          _filteredLogs = NetworkLogger.logs.values.toList();
+          _filteredLogs = List.of(NetworkLogger.logs.values.toList());
           _filterTextController.clear();
         },
       );
@@ -161,16 +176,14 @@ class _NetworkLogsPageState extends State<NetworkLogsPage> {
         () {
           selectedAll
               ? _selectedLogs = []
-              : _selectedLogs.addAll(_filteredLogs);
+              : _selectedLogs = List.of(_filteredLogs);
         },
       );
 
   void _onChangeSelectableMode() => setState(
         () {
           _isSelectableMode = !_isSelectableMode;
-          if (!_isSelectableMode) {
-            _selectedLogs = [];
-          }
+          _selectedLogs = [];
         },
       );
 
@@ -200,11 +213,11 @@ class _NetworkLogsPageState extends State<NetworkLogsPage> {
       context: context,
       builder: (context) => alert.build(
         context,
-        title: 'Remove all network logs',
-        description: 'Are you sure you want to remove all network logs?',
+        title: 'Remove selected network logs',
+        description: 'Are you sure you want to remove selected network logs?',
         buttonTitle: 'Remove',
         onButtonTap: () {
-          NetworkLogger.clearLogs();
+          NetworkLogger.clearSelectedLogs(_selectedLogs);
           Navigator.of(context).pop();
         },
       ),
@@ -212,28 +225,21 @@ class _NetworkLogsPageState extends State<NetworkLogsPage> {
   }
 
   void _filterLogs() {
+    final searchText = _filterTextController.text.toLowerCase();
     final filteredLogsByType = NetworkLogger.logs.values.where(
       (log) {
-        final containsStatusCode = log.statusCode
-            .toString()
-            .toLowerCase()
-            .contains(_filterTextController.text.toLowerCase());
-
-        final containsUri = log.uri
-            .toString()
-            .toLowerCase()
-            .contains(_filterTextController.text.toLowerCase());
-
-        final containsMethod = log.method
-            .toString()
-            .toLowerCase()
-            .contains(_filterTextController.text.toLowerCase());
+        final containsStatusCode =
+            log.statusCode.toString().toLowerCase().contains(searchText);
+        final containsUri =
+            log.uri.toString().toLowerCase().contains(searchText);
+        final containsMethod =
+            log.method.toString().toLowerCase().contains(searchText);
 
         return containsStatusCode || containsUri || containsMethod;
       },
     ).toList();
 
-    setState(() => _filteredLogs = filteredLogsByType);
+    setState(() => _filteredLogs = List.of(filteredLogsByType));
   }
 
   OutlineInputBorder get _border => const OutlineInputBorder(

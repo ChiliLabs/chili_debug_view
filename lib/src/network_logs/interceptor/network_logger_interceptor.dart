@@ -8,7 +8,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 
 class NetworkLoggerInterceptor extends Interceptor {
-  static const _idKey = 'id';
+  static const _idKey = 'debug_view_id';
 
   NetworkLoggerInterceptor();
 
@@ -29,7 +29,7 @@ class NetworkLoggerInterceptor extends Interceptor {
         requestHeaders: options.headers.map(
           (key, value) => MapEntry(key.toString(), value.toString()),
         ),
-        requestBody: prettyJson(options.data),
+        requestBody: _prettyJson(options.data),
       ),
     );
 
@@ -54,7 +54,7 @@ class NetworkLoggerInterceptor extends Interceptor {
           responseTime: DateTime.now(),
           type: NetworkLoggerLogType.success,
           statusCode: response.statusCode,
-          responseBody: prettyJson(response.data),
+          responseBody: _prettyJson(response.data),
           responseHeaders: response.headers.map.map(
             (key, value) => MapEntry(key.toString(), value.toString()),
           ),
@@ -66,8 +66,6 @@ class NetworkLoggerInterceptor extends Interceptor {
   }
 
   @override
-  // Should support older versions
-  // ignore: deprecated_member_use
   void onError(DioError err, ErrorInterceptorHandler handler) async {
     final requestId = err.requestOptions.extra[_idKey];
     final request = NetworkLogger.logs[requestId];
@@ -79,8 +77,8 @@ class NetworkLoggerInterceptor extends Interceptor {
           responseTime: DateTime.now(),
           type: NetworkLoggerLogType.error,
           statusCode: err.response?.statusCode,
-          responseBody: prettyJson(err.response?.data),
-          requestBody: prettyJson(err.response?.requestOptions.data),
+          responseBody: _prettyJson(err.response?.data),
+          requestBody: _prettyJson(err.response?.requestOptions.data),
           responseHeaders: err.response?.headers.map.map(
             (key, value) => MapEntry(key.toString(), value.toString()),
           ),
@@ -91,7 +89,7 @@ class NetworkLoggerInterceptor extends Interceptor {
     handler.next(err);
   }
 
-  String prettyJson(dynamic json) {
+  String _prettyJson(dynamic json) {
     try {
       final spaces = ' ' * 4;
       final encoder = JsonEncoder.withIndent(spaces);

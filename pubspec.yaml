@@ -1,22 +1,19 @@
 name: chili_debug_view
 description: Chili Flutter debug view
-publish_to: 'none'
-version: 0.0.1
+homepage: https://github.com/ChiliLabs/chili_debug_view
+version: 1.0.0
 
 environment:
   sdk: '>=3.0.0 <4.0.0'
+  flutter: ">=3.16.0"
 
 dependencies:
   flutter:
     sdk: flutter
+
   dio: any
   share_plus: any
   path_provider: any
-
-dev_dependencies:
-  flutter_test:
-    sdk: flutter
-  flutter_lints: ^2.0.0
 
 flutter:
   uses-material-design: true
