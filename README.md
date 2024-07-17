@@ -58,6 +58,6 @@ dio.interceptors.add(NetworkLoggerInterceptor());
 
 # Sample Project
 
-There is ![example app](https://github.com/ChiliLabs/chili_debug_view/tree/main/example) with simple request and app wrapping.
+There is an [example app](https://github.com/ChiliLabs/chili_debug_view/tree/main/example) with simple request and app wrapping.
 
-![](.doc/assets/example.gif)
+![example.gif](doc/assets/example.gif)
