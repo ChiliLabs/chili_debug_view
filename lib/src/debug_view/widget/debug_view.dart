@@ -1,8 +1,6 @@
-import 'package:chili_debug_view/src/debug_view/widget/debug_console_page.dart';
 import 'package:chili_debug_view/src/debug_view/widget/draggable_floating_action_button.dart';
+import 'package:chili_debug_view/src/network_logs/widget/network_logs_page.dart';
 import 'package:flutter/material.dart';
-
-const _buttonPadding = 80.0;
 
 class DebugView extends StatefulWidget {
   final GlobalKey<NavigatorState>? navigatorKey;
@@ -28,15 +26,16 @@ class _DebugViewState extends State<DebugView> {
     final app = widget.app;
     final viewPadding = MediaQuery.paddingOf(context);
     final safeAreaBottomPadding = viewPadding.bottom;
+    const buttonPadding = 80.0;
 
     return ValueListenableBuilder<bool>(
       valueListenable: _showDebugButtonNotifier,
       builder: (_, showDebugButton, __) {
         return LayoutBuilder(
           builder: (_, constraints) {
-            final horizontalOffset = constraints.maxWidth - _buttonPadding;
+            final horizontalOffset = constraints.maxWidth - buttonPadding;
             final verticalOffset =
-                constraints.maxHeight - safeAreaBottomPadding - _buttonPadding;
+                constraints.maxHeight - safeAreaBottomPadding - buttonPadding;
 
             return Stack(
               children: [
@@ -67,7 +66,7 @@ class _DebugViewState extends State<DebugView> {
 
     return () => widget.navigatorKey?.currentState?.push(
           MaterialPageRoute(
-            builder: (context) => DebugConsolePage(
+            builder: (context) => NetworkLogsPage(
               showDebugButtonNotifier: _showDebugButtonNotifier,
             ),
           ),

@@ -14,9 +14,9 @@ class NetworkLogger {
     logsStreamController.add(logs.values.toList());
   }
 
-  static void clearLogs() {
-    logs = {};
-    logsStreamController.add([]);
+  static void clearSelectedLogs(List<NetworkLog> networkLogs) {
+    logs.removeWhere((id, value) => networkLogs.contains(value));
+    logsStreamController.add(networkLogs);
   }
 
   static void disposeListeners() {
