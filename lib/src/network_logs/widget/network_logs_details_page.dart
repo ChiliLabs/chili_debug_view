@@ -2,7 +2,6 @@ import 'package:chili_debug_view/src/network_logs/model/network_log.dart';
 import 'package:chili_debug_view/src/share/share_provider.dart';
 import 'package:chili_debug_view/src/theme/typography/app_typography.dart';
 import 'package:chili_debug_view/src/time/time_provider.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 

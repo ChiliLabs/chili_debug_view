@@ -66,7 +66,7 @@ class NetworkLoggerInterceptor extends Interceptor {
   }
 
   @override
-  void onError(DioError err, ErrorInterceptorHandler handler) async {
+  void onError(DioException err, ErrorInterceptorHandler handler) async {
     final requestId = err.requestOptions.extra[_idKey];
     final request = NetworkLogger.logs[requestId];
 
