@@ -15,13 +15,13 @@ class SmallIconButton extends StatelessWidget {
     return TextButtonTheme(
       data: TextButtonThemeData(
         style: ButtonStyle(
-          foregroundColor: MaterialStateProperty.resolveWith<Color?>(
-            (states) => states.contains(MaterialState.disabled) ||
-                    states.contains(MaterialState.pressed)
+          foregroundColor: WidgetStateProperty.resolveWith<Color?>(
+            (states) => states.contains(WidgetState.disabled) ||
+                    states.contains(WidgetState.pressed)
                 ? Colors.white24
                 : Colors.white,
           ),
-          overlayColor: MaterialStateProperty.resolveWith<Color?>(
+          overlayColor: WidgetStateProperty.resolveWith<Color?>(
             (states) => Colors.transparent,
           ),
         ),
