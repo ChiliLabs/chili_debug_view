@@ -3,10 +3,13 @@ import 'dart:math';
 import 'package:chili_debug_view/chili_debug_view.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
   final dioFactory = DioFactory();
-  final spaceFlightNewsDio = dioFactory.create(
+  final spaceFlightNewsDio = await dioFactory.create(
     baseUrl: 'https://api.spaceflightnewsapi.net/v4',
     isDebugViewEnabled: true,
   );
@@ -31,6 +34,13 @@ class App extends StatefulWidget {
 
 class _AppState extends State<App> {
   final rootKey = GlobalKey<NavigatorState>();
+  String? _proxyUrl;
+
+  @override
+  void initState() {
+    super.initState();
+    _getProxy();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,6 +50,8 @@ class _AppState extends State<App> {
         return DebugView(
           navigatorKey: rootKey,
           showDebugViewButton: true,
+          onProxySaved: _onSaveProxy,
+          proxyUrl: _proxyUrl,
           app: app,
         );
       },
@@ -51,6 +63,17 @@ class _AppState extends State<App> {
         );
       },
     );
+  }
+
+  void _getProxy() async {
+    final prefs = await SharedPreferences.getInstance();
+    _proxyUrl = prefs.getString('proxyUrl');
+  }
+
+  void _onSaveProxy(String url) async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString('proxyUrl', url);
+    _proxyUrl = url;
   }
 }
 
@@ -83,10 +106,10 @@ class _HomePageState extends State<HomePage> {
 }
 
 class DioFactory {
-  Dio create({
+  Future<Dio> create({
     required String baseUrl,
     required bool isDebugViewEnabled,
-  }) {
+  }) async {
     final dio = Dio(
       BaseOptions(
         baseUrl: baseUrl,
@@ -99,8 +122,16 @@ class DioFactory {
     );
 
     if (isDebugViewEnabled) {
+      final prefs = await SharedPreferences.getInstance();
+
       dio.interceptors.add(
         NetworkLoggerInterceptor(),
+      );
+
+      dio.httpClientAdapter = ChiliHttpClientAdapter(
+        proxyUrl: prefs.getString(
+          'proxyUrl',
+        ),
       );
     }
 

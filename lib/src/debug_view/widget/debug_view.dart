@@ -6,12 +6,17 @@ class DebugView extends StatefulWidget {
   final GlobalKey<NavigatorState>? navigatorKey;
   final bool showDebugViewButton;
   final Widget? app;
+  /// Make sure app is restarted after proxy address is saved so Dio can see it.
+  final ValueChanged<String>? onProxySaved;
+  final String? proxyUrl;
 
   const DebugView({
     super.key,
     required this.navigatorKey,
     required this.showDebugViewButton,
     required this.app,
+    this.onProxySaved,
+    this.proxyUrl,
   });
 
   @override
@@ -68,6 +73,8 @@ class _DebugViewState extends State<DebugView> {
           MaterialPageRoute(
             builder: (context) => NetworkLogsPage(
               showDebugButtonNotifier: _showDebugButtonNotifier,
+              onProxySaved: widget.onProxySaved,
+              proxyUrl: widget.proxyUrl,
             ),
           ),
         );
