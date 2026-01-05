@@ -17,7 +17,7 @@ Add `chili_debug_view` to your `pubspec.yaml`:
 
 ```
 dependencies:
-  chili_debug_view: ^1.1.0
+  chili_debug_view: ^1.2.0
 ```
 
 ## Usage
@@ -40,6 +40,7 @@ class _AppState extends State<App> {
           navigatorKey: rootKey,
           showDebugViewButton: true,
           app: app,
+          onProxySaved: (proxyUrl) { },
         );
       },
       ...

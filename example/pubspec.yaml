@@ -10,7 +10,7 @@ dependencies:
     sdk: flutter
   chili_debug_view:
     path: ../
-  dio: ^5.7.0
+  dio: ^5.9.0
   shared_preferences: ^2.5.1
 
 flutter:
