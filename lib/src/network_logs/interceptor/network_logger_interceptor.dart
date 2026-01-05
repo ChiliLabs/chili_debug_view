@@ -10,7 +10,7 @@ import 'package:flutter/foundation.dart';
 class NetworkLoggerInterceptor extends Interceptor {
   static const _idKey = 'debug_view_id';
 
-  NetworkLoggerInterceptor();
+  const NetworkLoggerInterceptor();
 
   @override
   void onRequest(

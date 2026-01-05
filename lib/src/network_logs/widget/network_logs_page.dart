@@ -2,6 +2,7 @@ import 'package:chili_debug_view/src/network_logs/logger/network_logger.dart';
 import 'package:chili_debug_view/src/network_logs/model/network_log.dart';
 import 'package:chili_debug_view/src/network_logs/widget/network_logs_details_page.dart';
 import 'package:chili_debug_view/src/network_logs/widget/network_logs_item.dart';
+import 'package:chili_debug_view/src/network_logs/widget/network_logs_proxy_page.dart';
 import 'package:chili_debug_view/src/share/share_provider.dart';
 import 'package:chili_debug_view/src/theme/alert/adaptive_alert_dialog.dart';
 import 'package:chili_debug_view/src/theme/animation/app_animations.dart';
@@ -12,10 +13,14 @@ import 'package:flutter/material.dart';
 
 class NetworkLogsPage extends StatefulWidget {
   final ValueNotifier<bool> showDebugButtonNotifier;
+  final ValueChanged<String>? onProxySaved;
+  final String? proxyUrl;
 
   const NetworkLogsPage({
     super.key,
     required this.showDebugButtonNotifier,
+    this.onProxySaved,
+    this.proxyUrl,
   });
 
   @override
@@ -50,6 +55,8 @@ class _NetworkLogsPageState extends State<NetworkLogsPage> {
     final selectedAll = _selectedLogs.length == _filteredLogs.length;
     final bottomBarHeight =
         _isSelectableMode ? _toolbarHeight + bottomSafeArea : 0.0;
+
+    final onProxySavedUnwrapped = widget.onProxySaved;
 
     return Scaffold(
       backgroundColor: Colors.black,
@@ -91,6 +98,12 @@ class _NetworkLogsPageState extends State<NetworkLogsPage> {
           style: AppTypography.headline,
         ),
         actions: [
+          if (onProxySavedUnwrapped != null)
+            SmallTextButton(
+              title: 'Proxy',
+              onTap: () => _onProxyTap(onProxySavedUnwrapped),
+            ),
+          const SizedBox(width: 8),
           SmallTextButton(
             title: _isSelectableMode ? 'Cancel' : 'Select',
             onTap: _onChangeSelectableMode,
@@ -200,6 +213,16 @@ class _NetworkLogsPageState extends State<NetworkLogsPage> {
   void _onDetailsTap(NetworkLog log) => Navigator.of(context).push(
         MaterialPageRoute(
           builder: (context) => NetworkLogsDetailsPage(log: log),
+        ),
+      );
+
+  void _onProxyTap(ValueChanged<String> onSaveProxy) =>
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => NetworkLogsProxyPage(
+            onSaveProxy: onSaveProxy,
+            proxyUrl: widget.proxyUrl,
+          ),
         ),
       );
 

@@ -1,7 +1,7 @@
 name: chili_debug_view
 description: Flutter debug view for checking network logs, response time and sharing them outside of app
 homepage: https://github.com/ChiliLabs/chili_debug_view
-version: 1.1.0
+version: 1.2.0
 
 topics:
   - debug
@@ -17,8 +17,8 @@ dependencies:
   flutter:
     sdk: flutter
 
-  dio: ^5.7.0
-  share_plus: ^10.1.4
+  dio: ^5.9.0
+  share_plus: ^12.0.1
   path_provider: ^2.1.5
 
 flutter:
