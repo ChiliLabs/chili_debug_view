@@ -5,7 +5,7 @@ This can help QA engineers to better debug your app features
 
 # Get started
 
-Package uses dio (https://pub.dev/packages/dio) starting from version 5.5.0 to provide network logs,
+Package uses dio (https://pub.dev/packages/dio) starting from version 5.9.0 to provide network logs,
 so in order to use this package your requests must go through dio.
 
 For sharing it uses share_plus (https://pub.dev/packages/share_plus)
