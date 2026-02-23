@@ -17,3 +17,10 @@
 - Update packages to latest:
   - dio
   - share_plus
+
+## 1.3.0
+
+- Redesigned log details screen
+- Small UI improvements & fixes
+- Update packages to latest:
+  - dio
