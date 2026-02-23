@@ -275,6 +275,7 @@ class _RequestTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final requestBody = log.requestBody;
+    final headers = log.requestHeaders.entries;
 
     return _ScrollableTab(
       children: [
@@ -283,22 +284,28 @@ class _RequestTab extends StatelessWidget {
           style: AppTypography.headline.copyWith(color: Colors.white),
         ),
         const SizedBox(height: 8),
-        ...log.requestHeaders.entries.map<Widget>(
-          (header) => SelectableText.rich(
-            TextSpan(
-              children: [
-                TextSpan(
-                  text: '${header.key}\n',
-                  style: AppTypography.title.copyWith(color: Colors.white),
-                ),
-                TextSpan(
-                  text: header.value,
-                  style: AppTypography.body.copyWith(color: Colors.white70),
-                ),
-              ],
+        if (headers.isNotEmpty)
+          ...log.requestHeaders.entries.map<Widget>(
+            (header) => SelectableText.rich(
+              TextSpan(
+                children: [
+                  TextSpan(
+                    text: '${header.key}\n',
+                    style: AppTypography.title.copyWith(color: Colors.white),
+                  ),
+                  TextSpan(
+                    text: header.value,
+                    style: AppTypography.body.copyWith(color: Colors.white70),
+                  ),
+                ],
+              ),
             ),
+          )
+        else
+          Text(
+            'No request headers',
+            style: AppTypography.body.copyWith(color: Colors.grey),
           ),
-        ),
         const SizedBox(height: 24),
         Row(
           children: [
@@ -338,6 +345,7 @@ class _ResponseTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final responseBody = log.responseBody;
+    final headers = log.responseHeaders?.entries ?? {};
 
     return _ScrollableTab(
       children: [
@@ -346,25 +354,31 @@ class _ResponseTab extends StatelessWidget {
           style: AppTypography.headline.copyWith(color: Colors.white),
         ),
         const SizedBox(height: 8),
-        ...(log.responseHeaders?.entries ?? {}).map<Widget>(
-          (header) => Padding(
-            padding: const EdgeInsets.only(bottom: 4),
-            child: SelectableText.rich(
-              TextSpan(
-                children: [
-                  TextSpan(
-                    text: '${header.key}\n',
-                    style: AppTypography.title.copyWith(color: Colors.white),
-                  ),
-                  TextSpan(
-                    text: header.value,
-                    style: AppTypography.body.copyWith(color: Colors.white70),
-                  ),
-                ],
+        if (headers.isNotEmpty)
+          ...(log.responseHeaders?.entries ?? {}).map<Widget>(
+            (header) => Padding(
+              padding: const EdgeInsets.only(bottom: 4),
+              child: SelectableText.rich(
+                TextSpan(
+                  children: [
+                    TextSpan(
+                      text: '${header.key}\n',
+                      style: AppTypography.title.copyWith(color: Colors.white),
+                    ),
+                    TextSpan(
+                      text: header.value,
+                      style: AppTypography.body.copyWith(color: Colors.white70),
+                    ),
+                  ],
+                ),
               ),
             ),
+          )
+        else
+          Text(
+            'No response headers',
+            style: AppTypography.body.copyWith(color: Colors.grey),
           ),
-        ),
         const SizedBox(height: 24),
         Row(
           children: [
