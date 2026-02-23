@@ -9,11 +9,11 @@ class ShareProvider {
   static void shareNetworkLogs(List<NetworkLog> networkLogs) async {
     try {
       final file = await _writeNetworkLogsInFile(networkLogs);
-      Share.shareXFiles(
-        [XFile(file.path, mimeType: 'text/*')],
+      SharePlus.instance.share(ShareParams(
+        files: [XFile(file.path, mimeType: 'text/*')],
         subject: 'Network logs',
         text: 'Network logs',
-      );
+      ));
     } on Exception catch (ex, st) {
       debugPrintStack(
         label: 'Failed to write network logs in file: $ex',
@@ -29,10 +29,12 @@ class ShareProvider {
         log.toString(),
         mode: FileMode.append,
       );
-      Share.shareXFiles(
-        [XFile(file.path, mimeType: 'text/*')],
-        subject: 'Network logs',
-        text: 'Network logs',
+      SharePlus.instance.share(
+        ShareParams(
+          files: [XFile(file.path, mimeType: 'text/*')],
+          subject: 'Network logs',
+          text: 'Network logs',
+        ),
       );
     } on Exception catch (ex, st) {
       debugPrintStack(
