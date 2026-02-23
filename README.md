@@ -1,7 +1,11 @@
 # Chili Debug view
 
-This package allows to see network logs from mobile device. 
-This can help QA engineers to better debug your app features
+<a href="https://chililabs.io/"><img src="https://github.com/user-attachments/assets/7f0fec85-3fb2-4f35-b646-c2abd95af3c2" alt="chili_logo" width="250" height="250"></a>
+
+
+Chili DebugView — an open-source Flutter package designed by Chili Labs to make life easier for QA engineers and project managers. With DebugView, you can collect, view, and monitor network logs directly in your Flutter app, streamlining your testing and debugging workflow.
+
+Read more: [Making Debugging and Testing Process Easier with Chili Flutter DebugView](https://chililabs.io/blog/making-debugging-and-testing-process-easier-with-chili-flutter-debugview)
 
 # Get started
 
@@ -17,7 +21,7 @@ Add `chili_debug_view` to your `pubspec.yaml`:
 
 ```
 dependencies:
-  chili_debug_view: ^1.2.0
+  chili_debug_view: ^1.3.0
 ```
 
 ## Usage
