@@ -96,8 +96,13 @@ class NetworkLoggerInterceptor extends Interceptor {
   String _prettyJson(dynamic json) {
     try {
       final spaces = ' ' * 4;
-      final encoder = JsonEncoder.withIndent(spaces);
-      return encoder.convert(json);
+      if (json is String && json.isNotEmpty) {
+        final decoded = jsonDecode(json);
+        return JsonEncoder.withIndent(spaces).convert(decoded);
+      } else {
+        final encoder = JsonEncoder.withIndent(spaces);
+        return encoder.convert(json);
+      }
     } catch (ex, st) {
       debugPrintStack(
         label: 'Failed to stringify request body: $ex',
