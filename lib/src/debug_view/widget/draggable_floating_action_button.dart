@@ -102,7 +102,7 @@ class _DraggableFloatingActionButtonState
     }
   }
 
-  void _setBoundary(_) {
+  void _setBoundary(dynamic _) {
     final renderBox = _key.currentContext?.findRenderObject() as RenderBox;
 
     try {

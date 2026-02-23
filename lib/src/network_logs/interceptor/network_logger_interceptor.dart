@@ -56,7 +56,11 @@ class NetworkLoggerInterceptor extends Interceptor {
           statusCode: response.statusCode,
           responseBody: _prettyJson(response.data),
           responseHeaders: response.headers.map.map(
-            (key, value) => MapEntry(key.toString(), value.toString()),
+            (key, value) {
+              final listValue = value.join(', ');
+              final prettyValue = _tryPrettyJsonHeader(listValue);
+              return MapEntry(key.toString(), prettyValue);
+            },
           ),
         ),
       );
@@ -101,6 +105,17 @@ class NetworkLoggerInterceptor extends Interceptor {
       );
 
       return json.toString();
+    }
+  }
+
+  String _tryPrettyJsonHeader(String header) {
+    if (!header.startsWith('{')) return header;
+
+    try {
+      final decoded = jsonDecode(header);
+      return _prettyJson(decoded);
+    } catch (ex) {
+      return header;
     }
   }
 }

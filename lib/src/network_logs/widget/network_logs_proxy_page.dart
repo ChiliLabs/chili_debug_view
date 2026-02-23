@@ -39,36 +39,49 @@ class _NetworkLogsProxyPageState extends State<NetworkLogsProxyPage> {
         ),
         actions: [],
       ),
-      body: Column(
-        children: [
-          TextFormField(
-            style: const TextStyle(color: Colors.white),
-            controller: _controller,
-            cursorColor: Colors.white,
-            decoration: InputDecoration(
-              contentPadding: const EdgeInsets.symmetric(
-                horizontal: 12,
-                vertical: 8,
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(bottom: 12.0),
+              child: TextFormField(
+                style: const TextStyle(color: Colors.white),
+                controller: _controller,
+                cursorColor: Colors.white,
+                decoration: InputDecoration(
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 8,
+                  ),
+                  hintText: 'Input proxy',
+                  hintStyle: const TextStyle(color: Colors.white54),
+                  focusedBorder: _border,
+                  enabledBorder: _border,
+                  border: _border,
+                  suffixIcon: _controller.text.isNotEmpty
+                      ? SmallIconButton(
+                          icon: Icons.cancel_outlined,
+                          onTap: _controller.clear,
+                        )
+                      : null,
+                ),
               ),
-              hintText: 'Input proxy',
-              hintStyle: const TextStyle(color: Colors.white54),
-              focusedBorder: _border,
-              enabledBorder: _border,
-              border: _border,
-              suffixIcon: _controller.text.isNotEmpty
-                  ? SmallIconButton(
-                      icon: Icons.cancel_outlined,
-                      onTap: _controller.clear,
-                    )
-                  : null,
             ),
-          ),
-          MaterialButton(
-            child: Text('Save', style: const TextStyle(color: Colors.black)),
-            color: Colors.white,
-            onPressed: () => widget.onSaveProxy(_controller.text),
-          )
-        ],
+            Row(
+              children: [
+                Expanded(
+                  child: MaterialButton(
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6.0)),
+                    child: Text('Save', style: const TextStyle(color: Colors.black)),
+                    color: Colors.white,
+                    onPressed: () => widget.onSaveProxy(_controller.text),
+                  ),
+                ),
+              ],
+            )
+          ],
+        ),
       ),
     );
   }

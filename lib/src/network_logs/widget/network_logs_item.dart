@@ -22,6 +22,7 @@ class NetworkLogsItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final responseTime = item.responseTime;
+    final statusCode = item.statusCode;
 
     return LayoutBuilder(
       builder: (context, constraints) {
@@ -64,7 +65,7 @@ class NetworkLogsItem extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               Text(
                                 item.type.name.toUpperCase(),
@@ -72,7 +73,29 @@ class NetworkLogsItem extends StatelessWidget {
                                   color: Colors.white,
                                 ),
                               ),
+                              if (statusCode != null) ...[
+                                const SizedBox(width: 8),
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 8,
+                                    vertical: 2,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: _logTypeChipColor(item.type),
+                                    borderRadius: const BorderRadius.all(
+                                      Radius.circular(24),
+                                    ),
+                                  ),
+                                  child: Text(
+                                    statusCode.toString(),
+                                    style: AppTypography.body.copyWith(
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              ],
                               if (responseTime != null) ...[
+                                const Spacer(),
                                 const SizedBox(width: 8),
                                 Text(
                                   TimeProvider.prettyDuration(
@@ -121,6 +144,17 @@ class NetworkLogsItem extends StatelessWidget {
         return Colors.red;
       case NetworkLoggerLogType.started:
         return Colors.blue;
+    }
+  }
+
+  Color _logTypeChipColor(NetworkLoggerLogType type) {
+    switch (type) {
+      case NetworkLoggerLogType.success:
+        return Colors.green.shade800;
+      case NetworkLoggerLogType.error:
+        return Colors.red.shade800;
+      case NetworkLoggerLogType.started:
+        return Colors.blue.shade800;
     }
   }
 }
