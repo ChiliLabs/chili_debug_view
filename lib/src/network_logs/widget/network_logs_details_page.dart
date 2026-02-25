@@ -276,7 +276,7 @@ class _RequestTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final requestBody = log.requestBody;
-    final requestBodyIsPresent = requestBody != null && requestBody != 'null' && requestBody.isNotEmpty;
+    final requestBodyIsPresent = requestBody != null && requestBody != 'null' && requestBody.trim().isNotEmpty;
     final requestBodyIsJson = requestBodyIsPresent && JsonUtils.isJson(requestBody);
     final headers = log.requestHeaders.entries;
 
@@ -350,7 +350,7 @@ class _ResponseTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final responseBody = log.responseBody;
-    final responseBodyIsPresent = responseBody != null && responseBody != 'null' && responseBody.isNotEmpty;
+    final responseBodyIsPresent = responseBody != null && responseBody != 'null' && responseBody.trim().isNotEmpty;
     final responseBodyIsJson = responseBodyIsPresent && JsonUtils.isJson(responseBody);
     final headers = log.responseHeaders?.entries ?? {};
 
