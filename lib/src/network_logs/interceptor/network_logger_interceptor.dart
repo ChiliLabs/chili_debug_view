@@ -84,7 +84,11 @@ class NetworkLoggerInterceptor extends Interceptor {
           responseBody: _prettyJson(err.response?.data),
           requestBody: _prettyJson(err.response?.requestOptions.data),
           responseHeaders: err.response?.headers.map.map(
-            (key, value) => MapEntry(key.toString(), value.toString()),
+            (key, value) {
+              final listValue = value.join(', ');
+              final prettyValue = _tryPrettyJsonHeader(listValue);
+              return MapEntry(key.toString(), prettyValue);
+            },
           ),
         ),
       );
