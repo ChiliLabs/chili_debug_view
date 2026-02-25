@@ -3,6 +3,7 @@ import 'package:chili_debug_view/src/network_logs/model/network_log.dart';
 import 'package:chili_debug_view/src/share/share_provider.dart';
 import 'package:chili_debug_view/src/theme/typography/app_typography.dart';
 import 'package:chili_debug_view/src/time/time_provider.dart';
+import 'package:chili_debug_view/src/utils/json_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -275,6 +276,8 @@ class _RequestTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final requestBody = log.requestBody;
+    final requestBodyIsPresent = requestBody != null && requestBody != 'null' && requestBody.trim().isNotEmpty;
+    final requestBodyIsJson = requestBodyIsPresent && JsonUtils.isJson(requestBody);
     final headers = log.requestHeaders.entries;
 
     return _ScrollableTab(
@@ -313,15 +316,17 @@ class _RequestTab extends StatelessWidget {
               'Body:',
               style: AppTypography.headline.copyWith(color: Colors.white),
             ),
-            if (requestBody != null && requestBody != 'null') ...[
+            if (requestBodyIsJson) ...[
               const Spacer(),
               _CopyButton(onPressed: () => onCopyRequestBody(requestBody)),
             ]
           ],
         ),
         const SizedBox(height: 8),
-        if (requestBody != null && requestBody != 'null')
+        if (requestBodyIsJson)
           _ColoredJson(jsonData: requestBody)
+        else if (requestBodyIsPresent)
+          SelectableText(requestBody, style: AppTypography.body.copyWith(color: Colors.white70))
         else
           Text(
             'No request body',
@@ -345,6 +350,8 @@ class _ResponseTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final responseBody = log.responseBody;
+    final responseBodyIsPresent = responseBody != null && responseBody != 'null' && responseBody.trim().isNotEmpty;
+    final responseBodyIsJson = responseBodyIsPresent && JsonUtils.isJson(responseBody);
     final headers = log.responseHeaders?.entries ?? {};
 
     return _ScrollableTab(
@@ -386,15 +393,17 @@ class _ResponseTab extends StatelessWidget {
               'Body:',
               style: AppTypography.headline.copyWith(color: Colors.white),
             ),
-            if (responseBody != null && responseBody != 'null') ...[
+            if (responseBodyIsJson) ...[
               const Spacer(),
               _CopyButton(onPressed: () => onCopyResponseBody(responseBody)),
             ]
           ],
         ),
         const SizedBox(height: 8),
-        if (responseBody != null && responseBody != 'null')
+        if (responseBodyIsJson)
           _ColoredJson(jsonData: responseBody)
+        else if (responseBodyIsPresent)
+          SelectableText(responseBody, style: AppTypography.body.copyWith(color: Colors.white70))
         else
           Text(
             'No response body',
