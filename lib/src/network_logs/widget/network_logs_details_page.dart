@@ -326,7 +326,7 @@ class _RequestTab extends StatelessWidget {
         if (requestBodyIsJson)
           _ColoredJson(jsonData: requestBody)
         else if (requestBodyIsPresent)
-          SelectableText(requestBody, style: AppTypography.body.copyWith(color: Colors.white))
+          SelectableText(requestBody, style: AppTypography.body.copyWith(color: Colors.white70))
         else
           Text(
             'No request body',
@@ -403,7 +403,7 @@ class _ResponseTab extends StatelessWidget {
         if (responseBodyIsJson)
           _ColoredJson(jsonData: responseBody)
         else if (responseBodyIsPresent)
-          SelectableText(responseBody, style: AppTypography.body.copyWith(color: Colors.white))
+          SelectableText(responseBody, style: AppTypography.body.copyWith(color: Colors.white70))
         else
           Text(
             'No response body',
