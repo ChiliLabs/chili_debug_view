@@ -2,7 +2,7 @@
 
 ## 1.3.1
 
-- Non-JSON responses/requests are now properly display in log details screen
+- Non-JSON responses/requests are now properly displayed in log details screen
 - Added pretty formatting for error response headers
 
 ## 1.3.0
