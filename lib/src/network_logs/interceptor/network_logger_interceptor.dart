@@ -81,7 +81,7 @@ class NetworkLoggerInterceptor extends Interceptor {
           responseTime: DateTime.now(),
           type: NetworkLoggerLogType.error,
           statusCode: err.response?.statusCode,
-          responseBody: _prettyJson(err.response?.data),
+          responseBody: _prettyJson(_decodeErrorBody(err.response?.data)),
           requestBody: _prettyJson(err.response?.requestOptions.data),
           responseHeaders: err.response?.headers.map.map(
             (key, value) {
@@ -95,6 +95,15 @@ class NetworkLoggerInterceptor extends Interceptor {
     }
 
     handler.next(err);
+  }
+
+  dynamic _decodeErrorBody(dynamic data) {
+    if (data is! List<int>) return data;
+    try {
+      return jsonDecode(utf8.decode(data));
+    } catch (_) {
+      return data;
+    }
   }
 
   String _prettyJson(dynamic json) {

@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.3.2
+- Show erorr response of `List<int>` endpoints as a JSON instead of `List<int>`
+
 ## 1.3.1
 
 - Non-JSON responses/requests are now properly displayed in log details screen
