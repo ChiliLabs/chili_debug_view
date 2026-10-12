@@ -21,7 +21,7 @@ Add `chili_debug_view` to your `pubspec.yaml`:
 
 ```
 dependencies:
-  chili_debug_view: ^1.3.2
+  chili_debug_view: ^1.4.0
 ```
 
 ## Usage
