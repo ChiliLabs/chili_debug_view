@@ -64,49 +64,57 @@ class NetworkLogsItem extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Text(
-                                item.type.name.toUpperCase(),
-                                style: AppTypography.bodyBold.copyWith(
-                                  color: Colors.white,
-                                ),
-                              ),
-                              if (statusCode != null) ...[
-                                const SizedBox(width: 8),
-                                Container(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 8,
-                                    vertical: 2,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: _logTypeChipColor(item.type),
-                                    borderRadius: const BorderRadius.all(
-                                      Radius.circular(24),
+                          SizedBox(
+                            width: double.infinity,
+                            child: Wrap(
+                              alignment: WrapAlignment.spaceBetween,
+                              crossAxisAlignment: WrapCrossAlignment.center,
+                              spacing: 8,
+                              runSpacing: 4,
+                              children: [
+                                Wrap(
+                                  crossAxisAlignment: WrapCrossAlignment.center,
+                                  spacing: 8,
+                                  runSpacing: 4,
+                                  children: [
+                                    Text(
+                                      item.type.name.toUpperCase(),
+                                      style: AppTypography.bodyBold.copyWith(
+                                        color: Colors.white,
+                                      ),
                                     ),
-                                  ),
-                                  child: Text(
-                                    statusCode.toString(),
+                                    if (statusCode != null)
+                                      Container(
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 8,
+                                          vertical: 2,
+                                        ),
+                                        decoration: BoxDecoration(
+                                          color: _logTypeChipColor(item.type),
+                                          borderRadius: const BorderRadius.all(
+                                            Radius.circular(24),
+                                          ),
+                                        ),
+                                        child: Text(
+                                          statusCode.toString(),
+                                          style: AppTypography.body.copyWith(
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ),
+                                  ],
+                                ),
+                                if (responseTime != null)
+                                  Text(
+                                    TimeProvider.prettyDuration(
+                                      responseTime.difference(item.requestTime),
+                                    ),
                                     style: AppTypography.body.copyWith(
                                       color: Colors.white,
                                     ),
                                   ),
-                                ),
                               ],
-                              if (responseTime != null) ...[
-                                const Spacer(),
-                                const SizedBox(width: 8),
-                                Text(
-                                  TimeProvider.prettyDuration(
-                                    responseTime.difference(item.requestTime),
-                                  ),
-                                  style: AppTypography.body.copyWith(
-                                    color: Colors.white,
-                                  ),
-                                )
-                              ],
-                            ],
+                            ),
                           ),
                           const SizedBox(height: 8),
                           Text(

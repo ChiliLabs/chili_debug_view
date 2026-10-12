@@ -1,7 +1,13 @@
 # Changelog
 
+## 1.4.0
+
+- Support `share_plus` 13.x (12.x still supported)
+- Minimum supported Dart SDK is 3.4.0 and Flutter is 3.22.0
+- Fixed overflow and text compressing in network logs list item header
+
 ## 1.3.2
-- Show erorr response of `List<int>` endpoints as a JSON instead of `List<int>`
+- Show error response of `List<int>` endpoints as a JSON instead of `List<int>`
 
 ## 1.3.1
 
