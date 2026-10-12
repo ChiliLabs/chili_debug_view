@@ -10,8 +10,8 @@ dependencies:
     sdk: flutter
   chili_debug_view:
     path: ../
-  dio: ^5.9.1
-  shared_preferences: ^2.5.1
+  dio: ^5.11.1
+  shared_preferences: ^2.5.6
 
 flutter:
   uses-material-design: true
