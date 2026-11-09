@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.0.0
+
+- **Breaking:** Minimum supported Dart SDK is 3.13.0 and Flutter is 3.47.0. On older Flutter versions use 1.4.x
+- Migrated from `package:flutter/material.dart` to `package:material_ui` and `package:cupertino_ui`
+- Debug screens work in apps on either `package:material_ui` or `package:flutter/material.dart`
+- Requires `share_plus` 13.3.1+, `dio` 5.11.1+ and `path_provider` 2.1.6+
+- Replaced deprecated `cacheExtent` with `scrollCacheExtent` in log details screen
+
 ## 1.4.0
 
 - Support `share_plus` 13.x (12.x still supported)

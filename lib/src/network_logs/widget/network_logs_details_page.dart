@@ -4,7 +4,8 @@ import 'package:chili_debug_view/src/share/share_provider.dart';
 import 'package:chili_debug_view/src/theme/typography/app_typography.dart';
 import 'package:chili_debug_view/src/time/time_provider.dart';
 import 'package:chili_debug_view/src/utils/json_utils.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 
 class NetworkLogsDetailsPage extends StatefulWidget {
@@ -214,7 +215,7 @@ class _ScrollableTabState extends State<_ScrollableTab> {
       child: ListView(
         // Temporary workaround for scrollbar issue
         // https://github.com/flutter/flutter/issues/25652
-        cacheExtent: 100000,
+        scrollCacheExtent: const ScrollCacheExtent.pixels(100000),
         controller: _controller,
         padding: const EdgeInsets.all(16),
         children: widget.children,

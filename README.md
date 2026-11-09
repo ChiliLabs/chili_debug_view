@@ -9,8 +9,12 @@ Read more: <a href="https://chililabs.io/blog/making-debugging-and-testing-proce
 
 # Get started
 
-Package uses dio (https://pub.dev/packages/dio) starting from version 5.9.0 to provide network logs,
+Package uses dio (https://pub.dev/packages/dio) starting from version 5.11.1 to provide network logs,
 so in order to use this package your requests must go through dio.
+
+UI is built with material_ui (https://pub.dev/packages/material_ui) and requires Flutter 3.47.0 or newer.
+It works in apps that use either `package:material_ui` or `package:flutter/material.dart`.
+On older Flutter versions use chili_debug_view 1.4.x.
 
 For sharing it uses share_plus (https://pub.dev/packages/share_plus)
 and path_provider (https://pub.dev/packages/path_provider) 

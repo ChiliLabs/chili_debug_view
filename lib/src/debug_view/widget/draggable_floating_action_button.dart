@@ -1,5 +1,5 @@
 import 'package:chili_debug_view/src/theme/animation/app_animations.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter/services.dart';
 
 class DraggableFloatingActionButton extends StatefulWidget {

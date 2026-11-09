@@ -1,6 +1,7 @@
+import 'package:chili_debug_view/src/debug_view/widget/debug_view_scope.dart';
 import 'package:chili_debug_view/src/debug_view/widget/draggable_floating_action_button.dart';
 import 'package:chili_debug_view/src/network_logs/widget/network_logs_page.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 class DebugView extends StatefulWidget {
   final GlobalKey<NavigatorState>? navigatorKey;
@@ -71,10 +72,12 @@ class _DebugViewState extends State<DebugView> {
 
     return () => widget.navigatorKey?.currentState?.push(
           MaterialPageRoute(
-            builder: (context) => NetworkLogsPage(
-              showDebugButtonNotifier: _showDebugButtonNotifier,
-              onProxySaved: widget.onProxySaved,
-              proxyUrl: widget.proxyUrl,
+            builder: (context) => DebugViewScope(
+              child: NetworkLogsPage(
+                showDebugButtonNotifier: _showDebugButtonNotifier,
+                onProxySaved: widget.onProxySaved,
+                proxyUrl: widget.proxyUrl,
+              ),
             ),
           ),
         );
