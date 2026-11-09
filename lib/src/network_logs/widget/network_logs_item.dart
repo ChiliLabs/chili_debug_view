@@ -3,7 +3,7 @@ import 'package:chili_debug_view/src/network_logs/model/network_logger_log_type.
 import 'package:chili_debug_view/src/theme/animation/app_animations.dart';
 import 'package:chili_debug_view/src/theme/typography/app_typography.dart';
 import 'package:chili_debug_view/src/time/time_provider.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 class NetworkLogsItem extends StatelessWidget {
   final NetworkLog item;

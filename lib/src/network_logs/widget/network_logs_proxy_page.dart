@@ -1,6 +1,6 @@
 import 'package:chili_debug_view/src/theme/button/small_icon_button.dart';
 import 'package:chili_debug_view/src/theme/typography/app_typography.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 class NetworkLogsProxyPage extends StatefulWidget {
   final ValueChanged<String> onSaveProxy;

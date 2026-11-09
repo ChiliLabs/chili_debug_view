@@ -5,7 +5,7 @@
 // Redistributed with modifications under the same BSD 3-Clause License.
 // Copyright 2026 ChiliLabs. All rights reserved.
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'dart:convert';
 
 /// Global indent length in spaces used by all widgets in a single render pass.

@@ -1,3 +1,4 @@
+import 'package:chili_debug_view/src/debug_view/widget/debug_view_scope.dart';
 import 'package:chili_debug_view/src/network_logs/logger/network_logger.dart';
 import 'package:chili_debug_view/src/network_logs/model/network_log.dart';
 import 'package:chili_debug_view/src/network_logs/widget/network_logs_details_page.dart';
@@ -9,7 +10,7 @@ import 'package:chili_debug_view/src/theme/animation/app_animations.dart';
 import 'package:chili_debug_view/src/theme/button/small_icon_button.dart';
 import 'package:chili_debug_view/src/theme/button/small_text_button.dart';
 import 'package:chili_debug_view/src/theme/typography/app_typography.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 class NetworkLogsPage extends StatefulWidget {
   final ValueNotifier<bool> showDebugButtonNotifier;
@@ -212,16 +213,20 @@ class _NetworkLogsPageState extends State<NetworkLogsPage> {
 
   void _onDetailsTap(NetworkLog log) => Navigator.of(context).push(
         MaterialPageRoute(
-          builder: (context) => NetworkLogsDetailsPage(log: log),
+          builder: (context) => DebugViewScope(
+            child: NetworkLogsDetailsPage(log: log),
+          ),
         ),
       );
 
   void _onProxyTap(ValueChanged<String> onSaveProxy) =>
       Navigator.of(context).push(
         MaterialPageRoute(
-          builder: (context) => NetworkLogsProxyPage(
-            onSaveProxy: onSaveProxy,
-            proxyUrl: widget.proxyUrl,
+          builder: (context) => DebugViewScope(
+            child: NetworkLogsProxyPage(
+              onSaveProxy: onSaveProxy,
+              proxyUrl: widget.proxyUrl,
+            ),
           ),
         ),
       );
@@ -234,15 +239,18 @@ class _NetworkLogsPageState extends State<NetworkLogsPage> {
 
     showAdaptiveDialog(
       context: context,
-      builder: (context) => alert.build(
-        context,
-        title: 'Remove selected network logs',
-        description: 'Are you sure you want to remove selected network logs?',
-        buttonTitle: 'Remove',
-        onButtonTap: () {
-          NetworkLogger.clearSelectedLogs(_selectedLogs);
-          Navigator.of(context).pop();
-        },
+      builder: (context) => DebugViewScope(
+        child: alert.build(
+          context,
+          title: 'Remove selected network logs',
+          description:
+              'Are you sure you want to remove selected network logs?',
+          buttonTitle: 'Remove',
+          onButtonTap: () {
+            NetworkLogger.clearSelectedLogs(_selectedLogs);
+            Navigator.of(context).pop();
+          },
+        ),
       ),
     );
   }
